@@ -5,45 +5,148 @@ from matplotlib.animation import FuncAnimation
 import matplotlib.colors as mcolors
 
 # Definindo o grafo com as cidades e conexões fornecidas
-graph = {
-    'Açu': {'Angicos': 41.4, 'Mossoró': 69.4, 'Paraú': 36.7, 'Jucurutu': 78.9, 
-            'Alfonso_Bezera': 62.5, 'Canaubais': 29.9, 'Campo_Grande': 62.5},
-    'Angicos': {'Açu': 41.4, 'Lajes': 45.0, 'Currais_Novos': 112.0, 
-                'Alfonso_Bezera': 23.2, 'Canaubais': 72.9},
-    'Apodi': {'Mossoró': 82.0, 'Felipe_de_Guerra': 22.8, 'Caraúbas': 49.6},
-    'Caiçara_do_Rio_do_Vento': {'Lajes': 28.1, 'Santa_Maria': 38.2, 
-                                'Currais_Novos': 113.0, 'Joao_Camara': 43.7},
-    'Lajes': {'Angicos': 45.0, 'Caiçara_do_Rio_do_Vento': 28.1, 'Santa_Cruz': 91.5,
-              'Currais_Novos': 92.1, 'Jucurutu': 115.0, 'Joao_Camara': 65.3, 
-              'Alfonso_Bezera': 44.0},
-    'Macaíba': {'Natal': 27.7, 'Parnamirin': 16.2, 'Santa_Maria': 39.5,
-                'Sao_Paulo_do_Potangi': 51.7, 'Santa_Cruz': 95.6, 'Ceará_mirim': 72.9},
-    'Mossoró': {'Açu': 69.4, 'Apodi': 82.0, 'Felipe_de_Guerra': 72.8,
-                'Canaubais': 72.9, 'Campo_Grande': 83.7},
-    'Natal': {'Macaíba': 27.7, 'Parnamirin': 20.3, 'Ceará_mirim': 33.6},
-    'Parnamirin': {'Macaíba': 16.2, 'Natal': 20.3, 'Santa_Cruz': 116.0},
-    'Santa_Maria': {'Caiçara_do_Rio_do_Vento': 38.2, 'Macaíba': 39.5,
-                    'Sao_Paulo_do_Potangi': 15.9},
-    'Sao_Paulo_do_Potangi': {'Macaíba': 51.7, 'Santa_Maria': 15.9, 'Santa_Cruz': 72.1},
-    'Felipe_de_Guerra': {'Apodi': 22.8, 'Mossoró': 72.8, 'Caraúbas': 35.9},
-    'Paraú': {'Açu': 36.7, 'Caraúbas': 60.4},
-    'Caraúbas': {'Apodi': 49.6, 'Felipe_de_Guerra': 35.9, 'Paraú': 60.4, 
-                 'Campo_Grande': 31.7},
-    'Santa_Cruz': {'Lajes': 91.5, 'Macaíba': 95.6, 'Parnamirin': 116.0,
-                   'Sao_Paulo_do_Potangi': 72.1, 'Currais_Novos': 65.0,
-                   'Ceará_mirim': 39.2, 'Joao_Camara': 50.5},
-    'Currais_Novos': {'Angicos': 112.0, 'Caiçara_do_Rio_do_Vento': 113.0,
-                      'Lajes': 92.1, 'Santa_Cruz': 65.0, 'Jucurutu': 70.1},
-    'Jucurutu': {'Açu': 78.9, 'Lajes': 115.0, 'Currais_Novos': 70.1,
-                 'Campo_Grande': 46.6},
-    'Ceará_mirim': {'Natal': 33.6, 'Macaíba': 72.9, 'Santa_Cruz': 39.2,
-                    'Joao_Camara': 47.7},
-    'Joao_Camara': {'Caiçara_do_Rio_do_Vento': 43.7, 'Lajes': 65.3,
-                    'Santa_Cruz': 50.5, 'Ceará_mirim': 47.7, 'Alfonso_Bezera': 91.9},
-    'Alfonso_Bezera': {'Açu': 62.5, 'Angicos': 23.2, 'Lajes': 44.0,
-                       'Canaubais': 55.2, 'Joao_Camara': 91.9},
-    'Canaubais': {'Açu': 29.9, 'Angicos': 72.9, 'Mossoró': 72.9, 'Alfonso_Bezera': 55.2},
-    'Campo_Grande': {'Açu': 62.5, 'Mossoró': 83.7, 'Caraúbas': 31.7, 'Jucurutu': 46.6}
+graph = {'Açu': {
+    'Alfonso Bezera': 62.5,
+    'Angicos': 41.4,
+    'Campo Grande': 62.5,
+    'Canaubais': 29.9,
+    'Jucurutu': 78.9,
+    'Mossoró': 69.4,
+    'Paraú': 36.7,
+},
+    'Alfonso Bezera': {
+        'Açu': 62.5,
+        'Angicos': 23.2,
+        'Canaubais': 55.2,
+        'Joao Câmara': 91.9,
+        'Lajes': 44.0,
+    },
+    'Angicos': {
+        'Açu': 41.4,
+        'Alfonso Bezera': 23.2,
+        'Canaubais': 72.9,
+        'Currais Novos': 112.0,
+        'Lajes': 45.0,
+    },
+    'Apodi': {
+        'Caraúbas': 49.6,
+        'Felipe de Guerra': 22.8,
+        'Mossoró': 82.0,
+    },
+    'Caiçara do Rio do Vento': {
+        'Currais Novos': 113.0,
+        'Joao Câmara': 43.7,
+        'Lajes': 28.1,
+        'Santa Maria': 38.2,
+    },
+    'Campo Grande': {
+        'Açu': 62.5,
+        'Caraúbas': 31.7,
+        'Jucurutu': 46.6,
+        'Mossoró': 83.7,
+    },
+    'Canaubais': {
+        'Açu': 29.9,
+        'Alfonso Bezera': 55.2,
+        'Angicos': 72.9,
+        'Mossoró': 72.9,
+    },
+    'Caraúbas': {
+        'Apodi': 49.6,
+        'Campo Grande': 31.7,
+        'Felipe de Guerra': 35.9,
+        'Paraú': 60.4,
+    },
+    'Ceará mirim': {
+        'Joao Câmara': 47.7,
+        'Macaíba': 29.5,
+        'Natal': 33.6,
+        'Santa Maria': 39.2,
+    },
+    'Currais Novos': {
+        'Angicos': 112.0,
+        'Caiçara do Rio do Vento': 113.0,
+        'Jucurutu': 70.1,
+        'Lajes': 92.1,
+        'Santa Cruz': 65.0,
+    },
+    'Felipe de Guerra': {
+        'Apodi': 22.8,
+        'Caraúbas': 35.9,
+        'Mossoró': 72.8,
+    },
+    'Joao Câmara': {
+        'Alfonso Bezera': 91.9,
+        'Caiçara do Rio do Vento': 43.7,
+        'Ceará mirim': 47.7,
+        'Lajes': 65.3,
+        'Santa Cruz': 50.5,
+    },
+    'Jucurutu': {
+        'Açu': 78.9,
+        'Campo Grande': 46.6,
+        'Currais Novos': 70.1,
+        'Lajes': 115.0,
+    },
+    'Lajes': {
+        'Alfonso Bezera': 44.0,
+        'Angicos': 45.0,
+        'Caiçara do Rio do Vento': 28.1,
+        'Currais Novos': 92.1,
+        'Joao Câmara': 65.3,
+        'Jucurutu': 115.0,
+        'Santa Cruz': 91.5,
+    },
+    'Macaíba': {
+        'Ceará mirim': 72.9,
+        'Natal': 27.7,
+        'Parnamirin': 16.2,
+        'Santa Cruz': 95.6,
+        'Santa Maria': 39.5,
+        'Sao paulo do potangi': 51.7,
+    },
+    'Mossoró': {
+        'Açu': 69.4,
+        'Apodi': 82.0,
+        'Campo Grande': 83.7,
+        'Canaubais': 72.9,
+        'Felipe de Guerra': 72.8,
+    },
+    'Paraú': {
+        'Açu': 36.7,
+        'Caraúbas': 60.4,
+        'Felipe de Guerra': 118.0,
+    },
+    'Natal': {
+        'Ceará mirim': 33.6,
+        'Macaíba': 27.7,
+        'Parnamirin': 20.3,
+    },
+    'Parnamirin': {
+        'Macaíba': 16.2,
+        'Natal': 20.3,
+        'Santa Cruz': 116.0,
+    },
+    'Santa Cruz': {
+        'Currais Novos': 65.0,
+        'Joao Câmara': 50.5,
+        'Lajes': 91.5,
+        'Macaíba': 95.6,
+        'Parnamirin': 116.0,
+        'Sao paulo do potangi': 72.1,
+    },
+    'Santa Maria': {
+        'Caiçara do Rio do Vento': 38.2,
+        'Ceará mirim': 39.2,
+        'Macaíba': 39.5,
+        'Sao paulo do potangi': 15.9,
+    },
+    'Sao paulo do potangi': {
+        'Caiçara do Rio do Vento': 37.7,
+        'Macaíba': 51.7,
+        'Santa Cruz': 72.1,
+        'Santa Maria': 15.9,
+    }
 }
 
 # Implementação do algoritmo de Dijkstra com animação
@@ -183,8 +286,8 @@ def dijkstra_animation(graph, start, end):
     return path, distances[end]
 
 # Executar o algoritmo com animação
-start_city = 'Apodi'
-end_city = 'Natal'
+start_city = 'Natal'
+end_city = 'Apodi'
 shortest_path, total_distance = dijkstra_animation(graph, start_city, end_city)
 
 print(f"\nCaminho mais curto de {start_city} para {end_city}:")
