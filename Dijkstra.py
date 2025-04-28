@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import matplotlib.colors as mcolors
 
+
 # Definindo o grafo com as cidades e conexões fornecidas
 graph = {'Açu': {
     'Alfonso Bezera': 62.5,
@@ -274,6 +275,7 @@ def dijkstra_animation(graph, start, end):
     ani = FuncAnimation(fig, update, frames=frames, interval=800, repeat=False)
     plt.tight_layout()
     plt.show()
+    ani.save("output.mp4")
     
     # Retornar o caminho final e distância
     node = end
