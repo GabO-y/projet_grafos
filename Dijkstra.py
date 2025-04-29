@@ -1,3 +1,4 @@
+#!/bin/python
 import heapq
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -6,15 +7,16 @@ import matplotlib.colors as mcolors
 
 
 # Definindo o grafo com as cidades e conexões fornecidas
-graph = {'Açu': {
-    'Alfonso Bezera': 62.5,
-    'Angicos': 41.4,
-    'Campo Grande': 62.5,
-    'Canaubais': 29.9,
-    'Jucurutu': 78.9,
-    'Mossoró': 69.4,
-    'Paraú': 36.7,
-},
+graph = {
+    'Açu': {
+        'Alfonso Bezera': 62.5,
+        'Angicos': 41.4,
+        'Campo Grande': 62.5,
+        'Canaubais': 29.9,
+        'Jucurutu': 78.9,
+        'Mossoró': 69.4,
+        'Paraú': 36.7,
+    },
     'Alfonso Bezera': {
         'Açu': 62.5,
         'Angicos': 23.2,
@@ -157,32 +159,32 @@ def dijkstra_animation(graph, start, end):
     distances[start] = 0
     previous_nodes = {node: None for node in graph}
     priority_queue = [(0, start)]
-    
+
     # Criar grafo para visualização
     G = nx.Graph()
     for node in graph:
         G.add_node(node)
         for neighbor, weight in graph[node].items():
             G.add_edge(node, neighbor, weight=weight)
-    
+
     # Posicionamento dos nós
     pos = nx.spring_layout(G, seed=42)
-    
+
     # Configuração da figura
     fig, ax = plt.subplots(figsize=(12, 10))
     plt.title(f"Algoritmo de Dijkstra: {start} → {end}", fontsize=14)
-    
+
     # Variáveis para armazenar o estado da animação
     visited_nodes = []
     current_node = None
     current_edges = []
     path_edges = []
-    
+
     def update(frame):
         nonlocal priority_queue, distances, previous_nodes, visited_nodes, current_node, current_edges, path_edges
-        
+
         ax.clear()
-        
+
         if frame == 0:
             # Estado inicial
             nx.draw_networkx_nodes(G, pos, node_color='lightblue', ax=ax)
@@ -190,7 +192,7 @@ def dijkstra_animation(graph, start, end):
             nx.draw_networkx_edges(G, pos, edge_color='gray', alpha=0.5, ax=ax)
             ax.set_title(f"Estado Inicial - Próximo: {start}", fontsize=12)
             return
-        
+
         if not priority_queue:
             # Reconstruir caminho final
             if path_edges:
@@ -200,54 +202,54 @@ def dijkstra_animation(graph, start, end):
                     path.append(node)
                     node = previous_nodes[node]
                 path.reverse()
-                
+
                 path_edges = list(zip(path[:-1], path[1:]))
-                
+
                 nx.draw_networkx_nodes(G, pos, node_color='lightblue', ax=ax)
                 nx.draw_networkx_nodes(G, pos, nodelist=path, node_color='red', ax=ax)
                 nx.draw_networkx_labels(G, pos, ax=ax)
                 nx.draw_networkx_edges(G, pos, edge_color='gray', alpha=0.3, ax=ax)
                 nx.draw_networkx_edges(G, pos, edgelist=path_edges, edge_color='red', width=2, ax=ax)
-                
+
                 total_distance = distances[end]
                 ax.set_title(f"Caminho encontrado: {' → '.join(path)}\nDistância total: {total_distance} km", fontsize=12)
             return
-        
+
         # Extrair o nó com menor distância
         current_distance, current_node = heapq.heappop(priority_queue)
-        
+
         # Se já encontramos um caminho melhor, ignorar
         if current_distance > distances[current_node]:
             return
-        
+
         visited_nodes.append(current_node)
-        
+
         # Atualizar distâncias para vizinhos
         for neighbor, weight in graph[current_node].items():
             distance = current_distance + weight
-            
+
             # Se encontrarmos um caminho melhor
             if distance < distances[neighbor]:
                 distances[neighbor] = distance
                 previous_nodes[neighbor] = current_node
                 heapq.heappush(priority_queue, (distance, neighbor))
                 current_edges.append((current_node, neighbor))
-        
+
         # Desenhar o grafo
         nx.draw_networkx_nodes(G, pos, node_color='lightblue', ax=ax)
         nx.draw_networkx_nodes(G, pos, nodelist=visited_nodes, node_color='green', ax=ax)
         if current_node:
             nx.draw_networkx_nodes(G, pos, nodelist=[current_node], node_color='yellow', ax=ax)
         nx.draw_networkx_labels(G, pos, ax=ax)
-        
+
         # Desenhar todas as arestas
         nx.draw_networkx_edges(G, pos, edge_color='gray', alpha=0.3, ax=ax)
-        
+
         # Destacar arestas atuais sendo avaliadas
         if current_edges:
             nx.draw_networkx_edges(G, pos, edgelist=current_edges[-len(graph[current_node]):], 
-                                 edge_color='orange', width=2, ax=ax)
-        
+                                   edge_color='orange', width=2, ax=ax)
+
         # Se encontramos o destino, começar a reconstruir o caminho
         if current_node == end:
             node = end
@@ -257,26 +259,26 @@ def dijkstra_animation(graph, start, end):
                 node = previous_nodes[node]
             path.reverse()
             path_edges = list(zip(path[:-1], path[1:]))
-        
+
         # Desenhar o caminho encontrado até agora
         if path_edges:
             nx.draw_networkx_edges(G, pos, edgelist=path_edges, edge_color='red', width=2, ax=ax)
             nx.draw_networkx_nodes(G, pos, nodelist=path, node_color='red', ax=ax)
-        
+
         # Atualizar título
         ax.set_title(f"Visitando: {current_node}\nDistância atual: {current_distance} km", fontsize=12)
-        
+
         # Resetar arestas atuais para o próximo frame
         if frame % 2 == 0:
             current_edges = []
-    
+
     # Criar animação
     frames = len(graph) * 3 + 2  # Número suficiente de frames
     ani = FuncAnimation(fig, update, frames=frames, interval=800, repeat=False)
     plt.tight_layout()
     plt.show()
     ani.save("output.mp4")
-    
+
     # Retornar o caminho final e distância
     node = end
     path = []
@@ -284,7 +286,7 @@ def dijkstra_animation(graph, start, end):
         path.append(node)
         node = previous_nodes[node]
     path.reverse()
-    
+
     return path, distances[end]
 
 # Executar o algoritmo com animação
